@@ -8,7 +8,7 @@ def open_and_read_file(file_path):
     the file's contents as one string of text.
     """
     text_file = open(file_path)
-    text = text_file.read().replace('\n', ' ')
+    text = text_file.read().replace('\n', ' ').rstrip()
     text_file.close()
     return text
 
@@ -52,7 +52,13 @@ def make_text(chains):
     """Takes dictionary of markov chains; returns random text."""
 
     text = ""
+    first_pair = choice(chains.keys())
+    text = ' '.join(first_pair)
 
+    while chains.has_key((first_pair)):
+        next_word = choice(chains[first_pair])
+        text += ' {}'.format(next_word)
+        first_pair = (first_pair[1], next_word)
     # your code goes here
 
     return text
