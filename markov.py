@@ -7,10 +7,9 @@ def open_and_read_file(file_path):
     Takes a string that is a file path, opens the file, and turns
     the file's contents as one string of text.
     """
-
-    # your code goes here
-
-    return "This should be a variable that contains your file text as one long string"
+    text = open(file_path).read()
+    text = text.replace('\n', ' ')
+    return text
 
 
 def make_chains(text_string):
