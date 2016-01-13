@@ -2,7 +2,7 @@ from random import choice
 import sys
 
 
-def open_and_read_file(file_path):
+def open_and_read_file(file_path, current_text=None):
     """Takes file path as string; returns text as string.
 
     Takes a string that is a file path, opens the file, and turns
@@ -10,6 +10,8 @@ def open_and_read_file(file_path):
     """
     text_file = open(file_path)
     text = text_file.read().replace('\n', ' ').rstrip()
+    if current_text:
+        text = ' '.join((current_text, text))
     text_file.close()
     return text
 
@@ -52,27 +54,38 @@ def make_chains(text_string, gram_len):
 
     return chains
 
+
 def make_text(chains):
     """Takes dictionary of markov chains; returns random text."""
 
     text = ""
     first_pair = choice(chains.keys())
     text = ' '.join(first_pair)
+    text = text[0].capitalize() + text[1:]
+
 
     while chains.has_key((first_pair)):
+        # if not text[-1].isalpha() and not text[-1].isdigit():
+        #     break
+        if text[-1] in '!.?':
+            break
         next_word = choice(chains[first_pair])
         text += ' {}'.format(next_word)
+        
         first_pair = (first_pair[1], next_word)
     # your code goes here
 
     return text
 
+
 # print make_text(make_chains(open_and_read_file('gettysburg.txt')))
 input_path = sys.argv[1]
-n = int(sys.argv[2])
+input_path2 = sys.argv[2]
+n = int(sys.argv[3])
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
+input_text = open_and_read_file(input_path2, current_text=input_text)
 
 # Get a Markov chain
 chains = make_chains(input_text , n)
