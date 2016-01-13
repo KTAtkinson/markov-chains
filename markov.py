@@ -68,29 +68,35 @@ def make_text(chains):
         # if not text[-1].isalpha() and not text[-1].isdigit():
         #     break
         if text[-1] in '!.?':
-            break
+            return text
         next_word = choice(chains[first_pair])
         text += ' {}'.format(next_word)
         
         first_pair = (first_pair[1], next_word)
-    # your code goes here
 
-    return text
+    return make_text(chains)
 
 
 # print make_text(make_chains(open_and_read_file('gettysburg.txt')))
 input_path = sys.argv[1]
 input_path2 = sys.argv[2]
-n = int(sys.argv[3])
 
-# Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
-input_text = open_and_read_file(input_path2, current_text=input_text)
+try:
+    n = int(sys.argv[3])
+     # Open the file and turn it into one long string
+    input_text = open_and_read_file(input_path)
+    input_text = open_and_read_file(input_path2, current_text=input_text)
 
-# Get a Markov chain
-chains = make_chains(input_text , n)
+    # Get a Markov chain
+    chains = make_chains(input_text , n)
 
-# Produce random text
-random_text = make_text(chains)
+    # Produce random text
+    random_text = make_text(chains)
 
-print random_text
+    print random_text
+    
+except ValueError:
+   print "Oops!  That was no valid number.  Try again..."
+
+
+
